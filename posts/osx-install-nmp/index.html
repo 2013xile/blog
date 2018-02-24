@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://blog.imqia.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="OS X EI Capitan 10.11.3上安装Nginx&#43;MySQL&#43;PHP"/>
+  <meta name="twitter:description" content="前几日在新购的macbook Pro上搭建PHP环境，因为网上提供的资料不够准确，故走了一些弯路，特此记录，以帮助有需要的新手。OS X自带Ap"/>
+  
+    <meta name="twitter:site" content="@your_twitter_id"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@-ah chu-"/>
+  
+
+
+
+		
+		<meta name="author" content="-ah chu-">
+		<meta name="description" content="Web Developer">
+		<meta name="generator" content="Hugo 0.36.1" />
+		<title>OS X EI Capitan 10.11.3上安装Nginx&#43;MySQL&#43;PHP &middot; -ah chu-</title>
+		<link rel="shortcut icon" href="http://blog.imqia.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/style.css">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://blog.imqia.me/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://blog.imqia.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://blog.imqia.me/posts'>Archive</a>
+	<a href='http://blog.imqia.me/tags'>Tags</a>
+	<a href='http://blog.imqia.me/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        OS X EI Capitan 10.11.3上安装Nginx&#43;MySQL&#43;PHP
+                    </h1>
+                    <h2 class="headline">
+                    Aug 31, 2016 02:06
+                    · 1052 words
+                    · 3 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#以下为详细步骤">以下为详细步骤：</a>
+<ul>
+<li><a href="#1-安装brew">1. 安装brew</a></li>
+<li><a href="#2-安装mysql">2. 安装MySQL</a></li>
+<li><a href="#3-安装php">3. 安装PHP</a></li>
+<li><a href="#启动php-fpm">启动php-fpm</a></li>
+<li><a href="#结束php-fpm">结束php-fpm</a></li>
+<li><a href="#4-安装nginx">4. 安装Nginx</a></li>
+<li><a href="#启动nginx">启动Nginx</a></li>
+<li><a href="#结束-重载-配置文件-nginx">结束/重载（配置文件）Nginx</a></li>
+<li><a href="#关于修改php-fpm默认端口的说明">关于修改php-fpm默认端口的说明</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<p>前几日在新购的macbook Pro上搭建PHP环境，因为网上提供的资料不够准确，故走了一些弯路，特此记录，以帮助有需要的新手。OS X自带Apache和PHP，这里讲的是使用Nginx服务器。</p>
+
+<h2 id="以下为详细步骤">以下为详细步骤：</h2>
+
+<h3 id="1-安装brew">1. 安装brew</h3>
+
+<p>brew是OS X上一个优秀的命令行包管理工具，用它来安装一系列软件非常方便。</p>
+
+<pre><code class="language-bash">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+</code></pre>
+
+<h3 id="2-安装mysql">2. 安装MySQL</h3>
+
+<p>首先我们来安装MySQL，因为它最容易安装</p>
+
+<pre><code class="language-bash">brew install mysql
+</code></pre>
+
+<p>安装完成后为MySQL设置密码
+首先无密码登录，用户名为root</p>
+
+<pre><code class="language-bash">mysql -u root
+</code></pre>
+
+<p>在MySQL中操作</p>
+
+<pre><code class="language-bash">&gt;update mysql.user set authentication_string=&quot;new password&quot; where User='root'；
+&gt;flush privileges；
+&gt;quit
+</code></pre>
+
+<h3 id="3-安装php">3. 安装PHP</h3>
+
+<p>安装PHP7.0</p>
+
+<pre><code class="language-bash">brew install homebrew/php/php70 homebrew/php/php70-mcrypt homebrew/php/php70-gmagick homebrew/php/php70-opcache homebrew/php/php70-xdebug
+</code></pre>
+
+<p>接下来在命令行中输入</p>
+
+<pre><code class="language-bash">export PATH=&quot;/usr/local/sbin:$PATH&quot;  
+echo 'export PATH=&quot;/usr/local/sbin:$PATH&quot;' &gt;&gt; ~/.bash_profile  
+</code></pre>
+
+<p>最后输入<code>php -v</code>和<code>php-fpm -v</code>都应该显示PHP版本号7.0.x</p>
+
+<h3 id="启动php-fpm">启动php-fpm</h3>
+
+<pre><code class="language-bash">sudo php-fpm
+</code></pre>
+
+<h3 id="结束php-fpm">结束php-fpm</h3>
+
+<pre><code class="language-bash">sudo pkill php-fpm
+</code></pre>
+
+<p>注意在终端中启动php-fpm之后未结束前不要关闭窗口，若输入其他命令应该新建窗口，非正常关闭重新启动将显示端口被占用，此时需要修改默认的端口9000为其他端口。修改方法在介绍完Nginx的安装之后在说明，因为其中涉及到Nginx的相关设置。</p>
+
+<h3 id="4-安装nginx">4. 安装Nginx</h3>
+
+<p>最后安装Nginx，这一步有很多关键的设置，务必认真。
+安装</p>
+
+<pre><code class="language-bash">brew install --with-http2 nginx
+</code></pre>
+
+<p>安装后进行相关设置，打开设置文件</p>
+
+<pre><code class="language-bash">vim /usr/local/etc/nginx/nginx.conf
+</code></pre>
+
+<p>根据需要做如下修改</p>
+
+<pre><code class="language-bash">server {
+    listen       8080; #默认端口为8080
+    server_name  localhost; #网站地址
+
+    #charset koi8-r;
+
+    #access_log  logs/host.access.log  main;
+
+    #如果想使用80端口，需要给予权限，添加下面两行并参考下一个步骤，不需要则可以跳过
+    ssl_certificate ssl/nginx.crt;
+    ssl_certificate_key ssl/nginx.key;
+
+    location / {
+        root   html; #html为网站根目录，可以自己修改
+        index  index.html index.htm; #添加index.php
+    }
+</code></pre>
+
+<p>生成密钥给予权限以使用80端口</p>
+
+<pre><code class="language-bash">sudo mkdir /usr/local/etc/nginx/ssl/  
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /usr/local/etc/nginx/ssl/nginx.key -out /usr/local/etc/nginx/ssl/nginx.crt
+</code></pre>
+
+<p>设置Nginx支持php
+在刚才的配置文件中找到以下几行，去掉前面的井号，即使注释内容生效。并做相应修改</p>
+
+<pre><code class="language-bash">location ~ \.php$ {
+    root           html; #此处的根目录应与上面的设置的一致
+    fastcgi_pass   127.0.0.1:9000; #此处可以设置php-fpm默认端口
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name; #此处将/scripts$fastcgi_script_name修改为根目录$fastcgi_script_name
+    include        fastcgi_params; #将此行代码与上一行对调位置
+}
+</code></pre>
+
+<p>至此设置完成。</p>
+
+<h3 id="启动nginx">启动Nginx</h3>
+
+<pre><code class="language-bash">sudo nginx
+</code></pre>
+
+<h3 id="结束-重载-配置文件-nginx">结束/重载（配置文件）Nginx</h3>
+
+<pre><code class="language-bash">sudo nginx -s stop/reload
+</code></pre>
+
+<h3 id="关于修改php-fpm默认端口的说明">关于修改php-fpm默认端口的说明</h3>
+
+<p>在前面Nginx配置文件注释中已经有提到一处php-fpm默认端口的修改，这是在Nginx中进行设置，接下来只需在php-fpm的配置文件中另外修改即可。文件路径<code>/usr/local/etc/php/7.0/php-fpm.d/www.conf</code>，在文件中找到<code>listen = 127.0.0.1:9000</code>进行修改即可。</p>
+
+<p>参考资料：
+<a href="http://wlkns.co/install-nginx-php-mysql-on-mac-osx/">http://wlkns.co/install-nginx-php-mysql-on-mac-osx/</a><br />
+<a href="http://yangtai.blog.51cto.com/334569/213861">http://yangtai.blog.51cto.com/334569/213861</a></p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/xilesun">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> -ah chu-
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://blog.imqia.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://blog.imqia.me/js/main.js"></script>
+<script src="http://blog.imqia.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

@@ -6,18 +6,18 @@
     <description>Recent content in Posts on -ah chu-</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 25 Feb 2018 00:39:28 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 31 Aug 2016 02:06:14 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.imqia.me/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>My First Post</title>
-      <link>http://blog.imqia.me/posts/my-first-post/</link>
-      <pubDate>Sun, 25 Feb 2018 00:39:28 +0800</pubDate>
+      <title>OS X EI Capitan 10.11.3上安装Nginx&#43;MySQL&#43;PHP</title>
+      <link>http://blog.imqia.me/posts/osx-install-nmp/</link>
+      <pubDate>Wed, 31 Aug 2016 02:06:14 +0800</pubDate>
       
-      <guid>http://blog.imqia.me/posts/my-first-post/</guid>
-      <description></description>
+      <guid>http://blog.imqia.me/posts/osx-install-nmp/</guid>
+      <description>前几日在新购的macbook Pro上搭建PHP环境，因为网上提供的资料不够准确，故走了一些弯路，特此记录，以帮助有需要的新手。OS X自带Ap</description>
     </item>
     
   </channel>
