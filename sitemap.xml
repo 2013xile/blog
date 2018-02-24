@@ -3,17 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>your_site_url_address/</loc>
+    <loc>http://blog.imqia.me/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>your_site_url_address/categories/</loc>
+    <loc>http://blog.imqia.me/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>your_site_url_address/tags/</loc>
+    <loc>http://blog.imqia.me/tags/</loc>
     <priority>0</priority>
   </url>
   
