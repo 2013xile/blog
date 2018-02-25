@@ -3,13 +3,18 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.imqia.me/posts/add-helloworld-system-call-to-linux-kernel/</loc>
+    <lastmod>2017-12-31T10:54:12+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.imqia.me/posts/osx-install-nmp/</loc>
     <lastmod>2016-08-31T02:06:14+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.imqia.me/</loc>
-    <lastmod>2016-08-31T02:06:14+08:00</lastmod>
+    <lastmod>2017-12-31T10:54:12+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -20,7 +25,7 @@
   
   <url>
     <loc>http://blog.imqia.me/posts/</loc>
-    <lastmod>2016-08-31T02:06:14+08:00</lastmod>
+    <lastmod>2017-12-31T10:54:12+08:00</lastmod>
     <priority>0</priority>
   </url>
   

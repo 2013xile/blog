@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://blog.imqia.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Adding a Hello World System Call to Linux kernel 3.16.51"/>
+  <meta name="twitter:description" content="最近在看《操作系统概念》，第二章结束有个练习是给linux内核添加一个新的system call. 今天花了不少时间才完成，记录过程和遇到的坑。 环境：m"/>
+  
+    <meta name="twitter:site" content="@your_twitter_id"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@-ah chu-"/>
+  
+
+
+
+		
+		<meta name="author" content="-ah chu-">
+		<meta name="description" content="Web Developer">
+		<meta name="generator" content="Hugo 0.36.1" />
+		<title>Adding a Hello World System Call to Linux kernel 3.16.51 &middot; -ah chu-</title>
+		<link rel="shortcut icon" href="http://blog.imqia.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/style.css">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://blog.imqia.me/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://blog.imqia.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://blog.imqia.me/posts'>Archive</a>
+	<a href='http://blog.imqia.me/tags'>Tags</a>
+	<a href='http://blog.imqia.me/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Adding a Hello World System Call to Linux kernel 3.16.51
+                    </h1>
+                    <h2 class="headline">
+                    Dec 31, 2017 10:54
+                    · 490 words
+                    · 1 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                
+                <section id="post-body">
+                    <p>最近在看《操作系统概念》，第二章结束有个练习是给linux内核添加一个新的system call. 今天花了不少时间才完成，记录过程和遇到的坑。</p>
+
+<p>环境：macOS sierra / CentOS7 3.10.0 in Parallels Desktop</p>
+
+<p>一开始是打算直接对现有内核进行修改，但是修改之后发现现在系统中的内核不完整，缺少文件syscall_32.tbl，编译失败。于是从kernel.org下载新的完整的内核，我选择的版本是3.16.51.</p>
+
+<p>之后的过程基本参考 <a href="https://tssurya.wordpress.com/2014/08/19/adding-a-hello-world-system-call-to-linux-kernel-3-16-0/">https://tssurya.wordpress.com/2014/08/19/adding-a-hello-world-system-call-to-linux-kernel-3-16-0/</a></p>
+
+<p>但是按照该过程安装完内核，重启，在grub引导界面选择新内核启动出现黑屏。网上查到的原因有：</p>
+
+<ul>
+<li>显卡驱动缺失，需要重新安装parallels tools</li>
+<li>未安装图形界面</li>
+</ul>
+
+<p>选择原来的内核正常进入系统，打开terminal</p>
+
+<p><code>systemctl set-default multi-user.target</code></p>
+
+<p>设置命令行模式启动，之后可以正常进入新内核系统</p>
+
+<p>这时有个插曲是忘记了用户名密码，默认是parallels而不是root</p>
+
+<p>通过修改grub文件进入单用户模式，修改密码</p>
+
+<p>重启成功进入系统，测试新添加的system call成功</p>
+
+<p>重装parallels tools，要从parallels应用文件里挂载镜像到CD/DVD，很多教程未提到。</p>
+
+<p>安装完成通过界面启动仍旧黑屏，猜想应该是未安装图形界面。不过暂时用命令行挺好的。</p>
+
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'xilesun'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/xilesun">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> -ah chu-
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://blog.imqia.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://blog.imqia.me/js/main.js"></script>
+<script src="http://blog.imqia.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

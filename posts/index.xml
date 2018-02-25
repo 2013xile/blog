@@ -6,10 +6,19 @@
     <description>Recent content in Posts on -ah chu-</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 31 Aug 2016 02:06:14 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 31 Dec 2017 10:54:12 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.imqia.me/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Adding a Hello World System Call to Linux kernel 3.16.51</title>
+      <link>http://blog.imqia.me/posts/add-helloworld-system-call-to-linux-kernel/</link>
+      <pubDate>Sun, 31 Dec 2017 10:54:12 +0800</pubDate>
+      
+      <guid>http://blog.imqia.me/posts/add-helloworld-system-call-to-linux-kernel/</guid>
+      <description>最近在看《操作系统概念》，第二章结束有个练习是给linux内核添加一个新的system call. 今天花了不少时间才完成，记录过程和遇到的坑。 环境：m</description>
+    </item>
     
     <item>
       <title>OS X EI Capitan 10.11.3上安装Nginx&#43;MySQL&#43;PHP</title>
