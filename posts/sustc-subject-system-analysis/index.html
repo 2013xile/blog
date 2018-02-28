@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://blog.imqia.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="从选课按钮出发，简单分析选课系统"/>
+  <meta name="twitter:description" content="这篇文章将从前端的角度出发，简单分析一下学校的选课系统，提供第三方选课插件制作的基本思路。 思路分析 根据经验，选课系统从前台UI到后台数据库的"/>
+  
+    <meta name="twitter:site" content="@your_twitter_id"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@-ah chu-"/>
+  
+
+
+
+		
+		<meta name="author" content="-ah chu-">
+		<meta name="description" content="Web Developer">
+		<meta name="generator" content="Hugo 0.36.1" />
+		<title>从选课按钮出发，简单分析选课系统 &middot; -ah chu-</title>
+		<link rel="shortcut icon" href="http://blog.imqia.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/style.css">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://blog.imqia.me/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://blog.imqia.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://blog.imqia.me/posts'>Archive</a>
+	<a href='http://blog.imqia.me/tags'>Tags</a>
+	<a href='http://blog.imqia.me/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        从选课按钮出发，简单分析选课系统
+                    </h1>
+                    <h2 class="headline">
+                    Feb 25, 2018 22:21
+                    · 2544 words
+                    · 6 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#思路分析">思路分析</a></li>
+<li><a href="#从选课按钮开始">从选课按钮开始</a></li>
+<li><a href="#搜索和分析javascript函数代码">搜索和分析JavaScript函数代码</a></li>
+<li><a href="#获取cookie模拟登录">获取cookie模拟登录</a></li>
+<li><a href="#在postman中进行测试">在Postman中进行测试</a></li>
+<li><a href="#获取课表数组">获取课表数组</a>
+<ul>
+<li><a href="#javascript函数">JavaScript函数</a></li>
+<li><a href="#postman测试">Postman测试</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<p>这篇文章将从前端的角度出发，简单分析一下学校的选课系统，提供第三方选课插件制作的基本思路。</p>
+
+<h3 id="思路分析">思路分析</h3>
+
+<p>根据经验，选课系统从前台UI到后台数据库的交互流程基本如下：</p>
+
+<ol>
+<li>按下选课按钮的时候，触发相关JavaScript函数<br /></li>
+<li>通过JS函数向后台发起选课请求</li>
+<li>后台收到请求之后进行相关逻辑判断和处理，返回结果</li>
+</ol>
+
+<p>所以我们只要把2 ～ 3过程中的一些细节弄清楚，就可以跳出选课系统自身的UI，进行选课。</p>
+
+<h3 id="从选课按钮开始">从选课按钮开始</h3>
+
+<p>首先从选课按钮开始。用chrome打开学校选课系统的网页，随便选择一门课程，用chrome开发者工具选中选课链接，查看选课按钮的代码。可以找到如下代码。</p>
+
+<pre><code>&lt;a style=&quot;color:blue;text-decoration:underline;&quot; href=&quot;javascript:xsxkFun('2017201820XXXXX');&quot;&gt;选课&lt;/a&gt;
+</code></pre>
+
+<p>其中 <code>javascript:xsxkFun('2017201820XXXXX');&quot;</code> 就是我们要找的触发选课事件的JavaScript函数。</p>
+
+<h3 id="搜索和分析javascript函数代码">搜索和分析JavaScript函数代码</h3>
+
+<p>接下来切换到开发者工具的source标签，在各个JS文件中搜索函数名 <code>xsxkFun</code> ，最终得到完整的函数代码如下：</p>
+
+<pre><code>function xsxkFun(jx0404id){
+  if(!window.confirm(&quot;提示：你确认选择当前课程班级？&quot;)){
+    return;
+  }
+  $(&quot;#div_&quot;+jx0404id).hide();
+  xsxkOper(jx0404id,&quot;&quot;,&quot;&quot;);
+}
+</code></pre>
+
+<p>通过阅读代码，我们发现另一个相关函数 <code>xsxkOper</code>, 同样搜索得到完整代码如下：</p>
+
+<pre><code>function xsxkOper(jx0404id,xkzy,trjf){
+  var rev = eval('(' + $.ajax({
+    url:&quot;/jsxsd/xsxkkc/fawxkOper&quot;,
+    data:{
+      jx0404id:jx0404id,
+      xkzy:xkzy,
+      trjf:trjf
+    },
+    async:false
+  }).responseText + ')');
+
+  if(rev.success){
+    alert(&quot;选课成功！&quot;);
+    $(&quot;#xkzyView&quot;).window(&quot;close&quot;);
+    $(&quot;#xkjfView&quot;).window(&quot;close&quot;);
+
+    var jfViewStr = rev.jfViewStr;
+    if (jfViewStr!=null &amp;&amp; jfViewStr!=&quot;&quot;) {
+      var myDiv=document.getElementById(&quot;jfView&quot;);
+      myDiv.innerHTML=jfViewStr;
+    }
+
+    $(&quot;#zyxkButton&quot;).attr(&quot;disabled&quot;,false);
+    $(&quot;#trjfButton&quot;).attr(&quot;disabled&quot;,false);
+
+    parent.window.document.getElementById(&quot;xkkbLi&quot;).className = &quot;current&quot;;
+    parent.window.document.getElementById(&quot;xkjgLi&quot;).className = &quot;&quot;;
+    parent.window.document.getElementById(&quot;xkrzLi&quot;).className = &quot;&quot;;
+    //parent.window.document.getElementById(&quot;xktkLi&quot;).className = &quot;&quot;;
+
+    //刷新课表页面
+    parent.window.frames[&quot;kbFrame&quot;].location.href=&quot;/jsxsd/xsxkjg/xsxkkb&quot;;
+
+  }else{
+    $(&quot;#div_&quot;+jx0404id).show();
+    $(&quot;#zyxkButton&quot;).attr(&quot;disabled&quot;,false);
+    $(&quot;#trjfButton&quot;).attr(&quot;disabled&quot;,false);
+    alert(rev.message);
+  }
+}
+</code></pre>
+
+<p>别看这段代码这么长，但是核心代码只有这一段：</p>
+
+<pre><code>var rev = eval('(' + $.ajax({
+    url:&quot;/jsxsd/xsxkkc/fawxkOper&quot;,
+    data:{
+      jx0404id:jx0404id,
+      xkzy:xkzy,
+      trjf:trjf
+    },
+    async:false
+  }).responseText + ')');
+</code></pre>
+
+<p>这段代码的作用就是向后台发起请求，从中我们可以的到请求URL和需要发送的数据。其中 <code>jx0404id</code> 是课程编号的变量名，每个课程都有一个唯一编号，向后台发送这个编号来确定选择的课程。返回的结果可以从 <code>rev.message</code> 中取到。</p>
+
+<p>需要注意的是，我们从这段代码中看到请求的url是 <code>/jsxsd/xsxkkc/fawxkOper</code> ，但实际上，在选课系统中不同分类的课程对应的请求url并不相同，通过查看相应的代码可以得到相应的请求url。</p>
+
+<p>我们可以将代码改下成类似下面的样子：</p>
+
+<pre><code>var xkOper = function (jx0404id, type) {
+  $.ajax({
+  //type
+  //必修选课: bxxk
+  //选修选课: xxxk
+  //本学期计划选课: bxqjhxk
+  //专业内跨年级选课: knjxk
+  //跨专业选课: fawxk
+  //公选课选课: ggxxkxk
+    url: `http://jwxt.xxx.edu.cn/jsxsd/xsxkkc/${type}Oper?jx0404id=${jx0404id}`,
+    success: function (res) {
+      res = JSON.parse(res)
+      if (res.success) {
+        //选课成功
+      } else {
+        return res.message
+      }
+    }
+  })
+}
+</code></pre>
+
+<h3 id="获取cookie模拟登录">获取cookie模拟登录</h3>
+
+<p>有一个问题是我们选课的时候是需要登录的，如果登录之后在选课页面下，执行上面的代码，是没有问题的。但是如果想要脱离选课系统进行选课，就要模拟登录状态。一般的网页都是通过读取cookie来判断登录状态的。我们只要取到网页用来判断登录状态的cookie值，在发送请求的时候，将cookie值加入到请求头中即可。</p>
+
+<p>如果要用代码来读取cookie值需要请求登录，从返回结果的页面中读取，这个地方不做展开。我们先用手工的方式来获取cookie值。</p>
+
+<p>打开chrome开发者插件的Network标签，找到下面的地方，可以看到cookie中储存了一些键值对：</p>
+
+<p><img src="/images/xkxt-get-cookie.png" alt="xkxt-get-cookie" /></p>
+
+<p>经过测试发现 <code>JESSIONID</code> 是我们想要的用来判断登录状态的键值对。</p>
+
+<h3 id="在postman中进行测试">在Postman中进行测试</h3>
+
+<p>Postman是一个常用的用来模拟网页请求的工具，我们接下来对上面的分析做测试。</p>
+
+<p>在Postman中填写上面的到的相应信息，包括请求url，选课类别，课程编号，以及cookie，最后可以看到测试成功，返回结果。</p>
+
+<p><img src="/images/xkxt-postman-test.png" alt="xkxt-postman-test" /></p>
+
+<h3 id="获取课表数组">获取课表数组</h3>
+
+<p>类似上面的方法，我们还可以取到所有的供选课程，不过在这个过程中我也遇到了一些麻烦。</p>
+
+<h4 id="javascript函数">JavaScript函数</h4>
+
+<p>还是要从找到相应的JavaScript函数开始。打开课程页面我们可以发现，课程列表是用一个 <code>iframe</code> 嵌套的，也就是说课程列表其实有自己单独的页面。右键课程列表，View Frame source，可以打开课程列表页面的源码，找到显示课程列表的JavaScript函数 <code>queryKxkcList();</code> ，代码如下：</p>
+
+<pre><code>function queryKxkcList(){
+  //生成组合查询参数，课程名称，老师，过滤冲突已满等
+  var kcxx = $(&quot;#kcxx&quot;).val(); 
+  var skls = $(&quot;#skls&quot;).val(); 
+  var skxq = $(&quot;#skxq&quot;).val(); 
+  var skjc = $(&quot;#skjc&quot;).val();
+  var sfym = $(&quot;#sfym&quot;).is(&quot;:checked&quot;); 
+  var sfct = $(&quot;#sfct&quot;).is(&quot;:checked&quot;);
+			
+  kcxx = encodeURI(encodeURI(kcxx));
+  skls = encodeURI(encodeURI(skls));
+			
+  if(skjc!=&quot;&quot; &amp;&amp; skxq==&quot;&quot;){
+    alert(&quot;选课‘节次’查询时，必须选择‘星期’组合一起查询！&quot;);
+  }
+  var param = &quot;?kcxx=&quot;+kcxx+&quot;&amp;skls=&quot;+skls+&quot;&amp;skxq=&quot;+skxq+&quot;&amp;skjc=&quot;+skjc+&quot;&amp;sfym=&quot;+sfym+&quot;&amp;sfct=&quot;+sfct; 
+				
+  //...
+
+  $(&quot;#mainDiv&quot;).html(&quot;&lt;table id=\&quot;dataView\&quot; width=\&quot;100%\&quot; class=\&quot;display\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot;&gt;&lt;/table&gt;&quot;);
+  $(&quot;#dataView&quot;).dataTable({
+    //...
+    &quot;iDisplayLength&quot;:15, //每页显示课程个数			
+    &quot;sAjaxSource&quot;:&quot;/jsxsd/xsxkkc/xsxkKnjxk&quot;+param, //课程请求url
+    &quot;fnServerData&quot;: retrieveData, //发送请求的函数
+    //生成表格的列标题
+    &quot;aoColumns&quot;: [
+      {&quot;mDataProp&quot;:&quot;kch&quot;,&quot;sTitle&quot;: &quot;课程号&quot;,&quot;sWidth&quot;:&quot;120px&quot;},
+      {&quot;mDataProp&quot;:&quot;kcmc&quot;,&quot;sTitle&quot;: &quot;课程名&quot; }, 
+      {&quot;mDataProp&quot;:&quot;xf&quot;,&quot;sTitle&quot;: &quot;学分&quot;,&quot;sWidth&quot;:&quot;50px&quot;,sClass:&quot;center&quot;},
+      {&quot;mDataProp&quot;:&quot;skls&quot;,&quot;sTitle&quot;: &quot;上课老师&quot; },
+      {&quot;mDataProp&quot;:&quot;sksj&quot;,&quot;sTitle&quot;: &quot;上课时间&quot; },
+      {&quot;mDataProp&quot;:&quot;skdd&quot;,&quot;sTitle&quot;: &quot;上课地点&quot; },
+      {&quot;mDataProp&quot;:&quot;xkrs&quot;,&quot;sTitle&quot;: &quot;选课人数&quot;,&quot;sWidth&quot;:&quot;60px&quot;,sClass:&quot;center&quot;,&quot;bVisible&quot;:flag1},
+      {&quot;mDataProp&quot;:&quot;syrs&quot;,&quot;sTitle&quot;: &quot;剩余量&quot;,&quot;sWidth&quot;:&quot;60px&quot;,sClass:&quot;center&quot;,&quot;bVisible&quot;:flag2},
+      {&quot;mDataProp&quot;:&quot;ctsm&quot;,&quot;sTitle&quot;: &quot;时间冲突&quot;},
+      {&quot;mDataProp&quot;:&quot;czOper&quot;,&quot;sTitle&quot;: &quot;操作&quot;,&quot;sWidth&quot;:&quot;80px&quot;,sClass:&quot;center&quot;}
+    ]   
+  });
+}
+</code></pre>
+
+<p>这段代码比较长，我去掉了部分不关键的代码，并添加了少量注释，标注了关键信息。获取课表同样是向后台发送一个Ajax请求，得到课程列表。这里其实用了一个JQuery的插件dataTable来生成表格和发送请求，可以阅读该插件的文档得到更多信息。不同于选课请求，这里的请求方式是POST，从另一个函数 <code>retriveData</code> 可以得知。</p>
+
+<h4 id="postman测试">Postman测试</h4>
+
+<p>一开始我以为通过访问请求url和设置cookie即可得到目标数组，但是得到的结果却是空白。于是我访问了某个课程列表的iframe页面，使用chrome开发者工具NetWork标签，查看请求的相关细节，发现</p>
+
+<ol>
+<li>请求url中应该包含参数</li>
+<li>发送请求应该有相应的data</li>
+</ol>
+
+<p><img src="/images/xkxt-kclb-chrome.png" alt="xkxt-kclb-chrome" /></p>
+
+<p>将相关参数加入到请求中，测试成功，返回结果数组。</p>
+
+<p><img src="/images/xkxt-kclb-postman.png" alt="xkxt-kclb-postman" /></p>
+
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'ah-chu'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/xilesun">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> -ah chu-
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://blog.imqia.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://blog.imqia.me/js/main.js"></script>
+<script src="http://blog.imqia.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>
