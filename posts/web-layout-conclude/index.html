@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://blog.imqia.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="前端布局练习总结(table/inline/float/flex)"/>
+  <meta name="twitter:description" content="前段时间在霖哥的指导下，分别对table/inline/float/flex布局进行了相应的实现。做一下总结汇总。 table布局总结 优点： 垂"/>
+  
+    <meta name="twitter:site" content="@your_twitter_id"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@-ah chu-"/>
+  
+
+
+
+		
+		<meta name="author" content="-ah chu-">
+		<meta name="description" content="Web Developer">
+		<meta name="generator" content="Hugo 0.36.1" />
+		<title>前端布局练习总结(table/inline/float/flex) &middot; -ah chu-</title>
+		<link rel="shortcut icon" href="http://blog.imqia.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/style.css">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://blog.imqia.me/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://blog.imqia.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://blog.imqia.me/posts'>Archive</a>
+	<a href='http://blog.imqia.me/tags'>Tags</a>
+	<a href='http://blog.imqia.me/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        前端布局练习总结(table/inline/float/flex)
+                    </h1>
+                    <h2 class="headline">
+                    Sep 9, 2016 12:08
+                    · 919 words
+                    · 2 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#table布局总结">table布局总结</a>
+<ul>
+<li><a href="#优点">优点：</a></li>
+<li><a href="#缺点">缺点：</a></li>
+<li><a href="#应用场景">应用场景</a></li>
+<li><a href="#属性说明">属性说明</a></li>
+</ul></li>
+<li><a href="#inline-block布局总结">Inline-block布局总结</a>
+<ul>
+<li><a href="#优点-1">优点：</a></li>
+<li><a href="#缺点-1">缺点：</a></li>
+<li><a href="#应用场景-1">应用场景</a></li>
+<li><a href="#属性说明-1">属性说明</a></li>
+</ul></li>
+<li><a href="#float布局总结">float布局总结</a>
+<ul>
+<li><a href="#优点-2">优点：</a></li>
+<li><a href="#缺点-2">缺点：</a></li>
+<li><a href="#应用场景-2">应用场景</a></li>
+<li><a href="#属性说明-2">属性说明</a></li>
+</ul></li>
+<li><a href="#flex布局总结">Flex布局总结</a>
+<ul>
+<li><a href="#优点-3">优点：</a></li>
+<li><a href="#缺点-3">缺点：</a></li>
+<li><a href="#应用场景-3">应用场景</a></li>
+<li><a href="#属性说明-常用">属性说明(常用)</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<p>前段时间在霖哥的指导下，分别对table/inline/float/flex布局进行了相应的实现。做一下总结汇总。</p>
+
+<h2 id="table布局总结">table布局总结</h2>
+
+<h3 id="优点">优点：</h3>
+
+<ul>
+<li>垂直居中</li>
+<li>等高</li>
+<li>等分布局</li>
+</ul>
+
+<h3 id="缺点">缺点：</h3>
+
+<ul>
+<li>width, margin等属性不能影响设置了table-cell的元素</li>
+<li>设置了table-cell的元素自适应父级元素，使响应式的实现不能单纯依赖于CSS，而要借助JS实现</li>
+<li>设置border-spacing属性会使元素四周都出现间距，使第一个元素左端和最后一个元素右端出现间距，打破原来的布局</li>
+</ul>
+
+<h3 id="应用场景">应用场景</h3>
+
+<ul>
+<li>需要以表格呈现的内容</li>
+<li>图片、文字区块展示</li>
+<li>及其他需要等高等分布局的地方</li>
+</ul>
+
+<h3 id="属性说明">属性说明</h3>
+
+<ul>
+<li><code>display: table</code> 使元素以表格方式呈现</li>
+<li><code>display: table-cell</code> 使元素以单元格方式呈现，不能应用width, margin等属性</li>
+</ul>
+
+<h2 id="inline-block布局总结">Inline-block布局总结</h2>
+
+<h3 id="优点-1">优点：</h3>
+
+<ul>
+<li>水平、垂直居中</li>
+<li>同时具有行内样式和块级元素的属性</li>
+</ul>
+
+<h3 id="缺点-1">缺点：</h3>
+
+<ul>
+<li>作为行内元素存在letter-spacing。标准解决方案是父级元素使用font-size: 0。</li>
+</ul>
+
+<h3 id="应用场景-1">应用场景</h3>
+
+<ul>
+<li>需要使块级元素并列显示</li>
+<li>需要对行内元素应用margin等属性</li>
+</ul>
+
+<h3 id="属性说明-1">属性说明</h3>
+
+<ul>
+<li><code>display: inline-block</code> 使块级元素以行内样式渲染</li>
+<li><code>font-size: 0</code> 用于清除letter-spacing</li>
+<li><code>vertical-align: top/center/bottom</code> 对元素进行垂直定位</li>
+<li><code>text-align: left/center/right</code> 对元素进行水平定位</li>
+</ul>
+
+<h2 id="float布局总结">float布局总结</h2>
+
+<h3 id="优点-2">优点：</h3>
+
+<ul>
+<li>使块级元素成行排列</li>
+<li>响应式易于实现</li>
+<li>有多个解决现存bugs的方法</li>
+</ul>
+
+<h3 id="缺点-2">缺点：</h3>
+
+<ul>
+<li>脱离文档流，破坏原来布局，难以控制定位</li>
+<li>父级元素不能自适应高度，可以用overflow属性解决</li>
+<li>需要清除浮动，实现响应式过程中，需要多次对元素清除浮动</li>
+</ul>
+
+<h3 id="应用场景-2">应用场景</h3>
+
+<ul>
+<li>瀑布流布局</li>
+<li>横排列表</li>
+<li>流式布局</li>
+</ul>
+
+<h3 id="属性说明-2">属性说明</h3>
+
+<ul>
+<li><code>float：left/right</code> 实现一个元素向左或者向右浮动</li>
+<li><code>clear：left/right/both</code> 用于清除元素浮动</li>
+</ul>
+
+<h2 id="flex布局总结">Flex布局总结</h2>
+
+<h3 id="优点-3">优点：</h3>
+
+<ul>
+<li>等高</li>
+<li>等间距，自动适应父级元素宽度</li>
+<li>可控是否自动换行，换行方式，对齐方式，排列顺序等</li>
+</ul>
+
+<h3 id="缺点-3">缺点：</h3>
+
+<ul>
+<li>不兼容低版本浏览器</li>
+<li>易被过度使用</li>
+</ul>
+
+<h3 id="应用场景-3">应用场景</h3>
+
+<ul>
+<li>不需要兼容低版本浏览器</li>
+<li>灵活可控的布局</li>
+<li>类似表格同时需要自动换行</li>
+<li>需要元素自适应容器大小</li>
+</ul>
+
+<h3 id="属性说明-常用">属性说明(常用)</h3>
+
+<ul>
+<li><code>display: flex</code> 使元素以flex方式显示</li>
+<li><code>flex-wrap: nowrap|wrap|wrap-reverse</code> 是否自动换行以及换行方向</li>
+<li><code>flex-direction: row|row-reverse|column|column-reverse</code> 控制元素排列方向</li>
+<li><code>order: number</code> 控制元素排列顺序</li>
+<li><code>justify-content: flex-start|flex-end|center|space-between|space-around</code> 控制元素横向对齐方式</li>
+<li><code>align-content: flex-start|flex-end|center|space-between|space-around|stretch</code> 控制多行元素垂直对齐方式</li>
+<li><code>align-items: flex-start|flex-end|center|baseline|stretch</code> 控制多个元素垂直对齐方式</li>
+<li><code>align-self: auto|flex-start|flex-end|center|baseline|stretch</code> 控制单个元素垂直对齐方式</li>
+<li>flex-basis 设置元素宽度</li>
+</ul>
+
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'ah-chu'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/xilesun">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> -ah chu-
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://blog.imqia.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://blog.imqia.me/js/main.js"></script>
+<script src="http://blog.imqia.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

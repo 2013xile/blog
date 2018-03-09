@@ -30,6 +30,15 @@
     </item>
     
     <item>
+      <title>前端布局练习总结(table/inline/float/flex)</title>
+      <link>http://blog.imqia.me/posts/web-layout-conclude/</link>
+      <pubDate>Fri, 09 Sep 2016 12:08:08 +0800</pubDate>
+      
+      <guid>http://blog.imqia.me/posts/web-layout-conclude/</guid>
+      <description>前段时间在霖哥的指导下，分别对table/inline/float/flex布局进行了相应的实现。做一下总结汇总。 table布局总结 优点： 垂</description>
+    </item>
+    
+    <item>
       <title>OS X EI Capitan 10.11.3上安装Nginx&#43;MySQL&#43;PHP</title>
       <link>http://blog.imqia.me/posts/osx-install-nmp/</link>
       <pubDate>Wed, 31 Aug 2016 02:06:14 +0800</pubDate>
