@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>操作系统 on -ah chu-</title>
+    <link>http://blog.imqia.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+    <description>Recent content in 操作系统 on -ah chu-</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 31 Dec 2017 10:54:12 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.imqia.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Adding a Hello World System Call to Linux kernel 3.16.51</title>
+      <link>http://blog.imqia.me/posts/add-helloworld-system-call-to-linux-kernel/</link>
+      <pubDate>Sun, 31 Dec 2017 10:54:12 +0800</pubDate>
+      
+      <guid>http://blog.imqia.me/posts/add-helloworld-system-call-to-linux-kernel/</guid>
+      <description>最近在看《操作系统概念》，第二章结束有个练习是给linux内核添加一个新的system call. 今天花了不少时间才完成，记录过程和遇到的坑。 环境：m</description>
+    </item>
+    
+  </channel>
+</rss>
