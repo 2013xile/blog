@@ -29,6 +29,10 @@
   </url>
   
   <url>
+    <loc>http://blog.imqia.me/about/</loc>
+  </url>
+  
+  <url>
     <loc>http://blog.imqia.me/categories/</loc>
     <priority>0</priority>
   </url>
