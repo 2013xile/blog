@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://blog.imqia.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="配置Express &#43; Angular &#43; MongoDB &#43; TypeScript"/>
+  <meta name="twitter:description" content="最近打算尝试一下新的技术栈，先做一个个人网站练手。后端方面选择的是NodeJS，框架用Express，前端方面选择的是Angular, 数据库"/>
+  
+    <meta name="twitter:site" content="@your_twitter_id"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@-ah chu-"/>
+  
+
+
+
+		
+		<meta name="author" content="-ah chu-">
+		<meta name="description" content="Web Developer">
+		<meta name="generator" content="Hugo 0.36.1" />
+		<title>配置Express &#43; Angular &#43; MongoDB &#43; TypeScript &middot; -ah chu-</title>
+		<link rel="shortcut icon" href="http://blog.imqia.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/style.css">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://blog.imqia.me/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://blog.imqia.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://blog.imqia.me/posts'>Archive</a>
+	<a href='http://blog.imqia.me/tags'>Tags</a>
+	<a href='http://blog.imqia.me/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        配置Express &#43; Angular &#43; MongoDB &#43; TypeScript
+                    </h1>
+                    <h2 class="headline">
+                    Jul 16, 2018 18:19
+                    · 1042 words
+                    · 3 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="http://blog.imqia.me/tags/angular">Angular</a>
+                          
+                              <a href="http://blog.imqia.me/tags/nodejs">NodeJS</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#初始项目结构">初始项目结构</a></li>
+<li><a href="#安装angular">安装Angular</a></li>
+<li><a href="#安装express">安装Express</a>
+<ul>
+<li><a href="#准备">准备</a></li>
+<li><a href="#配置typescript">配置TypeScript</a></li>
+<li><a href="#连接客户端">连接客户端</a></li>
+<li><a href="#配置package-json的scripts">配置package.json的scripts</a></li>
+<li><a href="#测试">测试</a></li>
+</ul></li>
+<li><a href="#安装mongodb">安装MongoDB</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<p>最近打算尝试一下新的技术栈，先做一个个人网站练手。后端方面选择的是NodeJS，框架用Express，前端方面选择的是Angular, 数据库选择的是常与node搭配的MongoDB，并决定开始使用TypeScript。由于Github上找到的手脚架都不太符合我的需要，于是决定自己搭建，记录一下，避免日后踩坑。</p>
+
+<p>顺便提一句，为了契合TypeScript，我把编辑器从Sublime Text换成了VSCode, 这几天用下来，体验不错。自身集成的Git和Terminal用起来很方便，安装插件也比Sublime更简单快捷。</p>
+
+<h3 id="初始项目结构">初始项目结构</h3>
+
+<p>Node环境啥的不用说了，先再项目根目录下运行</p>
+
+<pre><code class="language-shell">npm init
+</code></pre>
+
+<p>生成 <code>package.json</code> 文件，然后新建两个文件夹，一个叫 <code>client</code> 用来放Angular的文件，一个叫 <code>server</code> 用来放Express的文件。</p>
+
+<h3 id="安装angular">安装Angular</h3>
+
+<p>这一步很简单，按照官网的做就可以了。先安装Angluar的CLI.</p>
+
+<pre><code class="language-shell">npm install -g @angular/cli
+</code></pre>
+
+<p>然后新建项目并运行</p>
+
+<pre><code class="language-shell">ng new client
+
+cd client
+ng serve
+</code></pre>
+
+<p>打开 <code>http://localhost:4200</code> 可以查看运行结果。</p>
+
+<h3 id="安装express">安装Express</h3>
+
+<h4 id="准备">准备</h4>
+
+<p>首先初始化目录，其中 <code>src</code> 用来存放项目的主要代码</p>
+
+<pre><code class="language-shell">cd server
+npm init
+
+mkdir src
+</code></pre>
+
+<p>之后安装Express相关依赖，其中 <code>dotenv</code> 用来加载 <code>.env</code> 文件中的环境变量</p>
+
+<pre><code class="language-shell">npm install express body-parser dotenv --save
+</code></pre>
+
+<h4 id="配置typescript">配置TypeScript</h4>
+
+<p>Angular的项目代码本身就是TypeScript写的，所以客户端不需要配置，服务器端需要配置一下。</p>
+
+<p>首先安装相关依赖</p>
+
+<pre><code class="language-shell">npm install -D tsnode tslint typescript --save-dev
+</code></pre>
+
+<p>新建文件 <code>tsconfig.json</code> , 进行typescript相关配置</p>
+
+<pre><code class="language-json">{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: &quot;es6&quot;,
+    &quot;module&quot;: &quot;commonjs&quot;,
+    &quot;outDir&quot;: &quot;dist&quot;,
+    &quot;esModuleInterop&quot;: true,
+    &quot;noImplicitAny&quot;: true,
+    &quot;sourceMap&quot;: true
+  },
+  &quot;include&quot;: [
+    &quot;src/**/*.ts&quot;
+  ],
+  &quot;exclude&quot;: [
+    &quot;node_modules&quot;
+  ]
+}
+</code></pre>
+
+<p>为了让ts可以使用我们安装的依赖，还需要安装相应的类型定义依赖 <code>npm install @types/[module_name] --save-dev</code></p>
+
+<p>之后再运行 <code>tsc</code> 即可将 <code>src</code> 目录下的ts文件输出为js文件到dist文件夹中</p>
+
+<h4 id="连接客户端">连接客户端</h4>
+
+<p>新建一个 <code>.env</code> 文件，输入环境变量</p>
+
+<pre><code class="language-shell"># 运行端口
+PORT=3000
+</code></pre>
+
+<p>进入 <code>src</code> , 在该目录下新建文件 <code>index.ts</code></p>
+
+<pre><code class="language-javascript">// server/src/index.ts
+import express from 'express';
+import bodyParser from 'body-parser';
+import path from 'path';
+
+const app = express();
+
+// Parsers
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+// Angular DIST output folder
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// Send all other requests to the Angular app
+app.get('*', (req, res) =&gt; {
+  res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+});
+
+export default app;
+
+</code></pre>
+
+<p>回到 <code>server</code> 目录，新建文件 <code>index.ts</code></p>
+
+<pre><code class="language-javascript">// server/index.ts
+import app from './src';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config({ path: '../.env' });
+
+const port = process.env.PORT || '3000';
+
+app.listen(port, () =&gt; console.log(`Running on localhost:${port}`));
+
+</code></pre>
+
+<h4 id="配置package-json的scripts">配置package.json的scripts</h4>
+
+<p>之后配置一些命令，方便之后编译和测试。</p>
+
+<p><code>/package.json</code></p>
+
+<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;app-install&quot;: &quot;npm install &amp;&amp; npm run install:client &amp;&amp; npm run install:server&quot;,
+    &quot;install:client&quot;: &quot;cd client &amp;&amp; npm install&quot;,
+    &quot;install:server&quot;: &quot;cd server &amp;&amp; npm install&quot;,
+    &quot;start&quot;: &quot;concurrently \&quot;npm run start:client\&quot; \&quot;npm run start:server\&quot;&quot;,
+    &quot;start:client&quot;: &quot;cd client &amp;&amp; ng serve&quot;,
+    &quot;start:server&quot;: &quot;cd server &amp;&amp; npm start&quot;,
+    &quot;start:prod&quot;: &quot;npm run build &amp;&amp; export NODE_ENV=production &amp;&amp; cd server/dist &amp;&amp; node index.js&quot;,
+    &quot;build&quot;: &quot;concurrently \&quot;npm run build:client\&quot; \&quot;npm run build:server\&quot;&quot;,
+    &quot;build:client&quot;: &quot;cd client &amp;&amp; ng build --prod --aot&quot;,
+    &quot;build:server&quot;: &quot;cd server &amp;&amp; npm run build&quot;,
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+}
+</code></pre>
+
+<p><code>server/package.json</code></p>
+
+<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;lint&quot;: &quot;tslint --project tsconfig.json&quot;,
+    &quot;start&quot;: &quot;npm run build:live&quot;,
+    &quot;build&quot;: &quot;tsc&quot;,
+    &quot;build:live&quot;: &quot;pm2 start ts-node -- index.ts&quot;,
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+},
+</code></pre>
+
+<h4 id="测试">测试</h4>
+
+<p>在根目录下运行 <code>npm run start</code> , 打开 <code>http://localhost:3000/</code> 查看结果应和端口4200的结果相同。</p>
+
+<h3 id="安装mongodb">安装MongoDB</h3>
+
+<p>在 <code>server</code> 目录下，安装相关依赖，以下依赖同样需要相应的 <code>@types/[module_name]</code></p>
+
+<pre><code class="language-shell">npm install mongodb mongoose bluebird --save
+</code></pre>
+
+<p>编写测试代码，在 <code>server/index.ts</code> 中添加如下代码</p>
+
+<pre><code class="language-javascript">import mongoose from 'mongoose';
+import bluebird from 'bluebird';
+
+mongoose.Promise = bluebird;
+mongoose.connect(process.env.MONGODB_URI_LOCAL, { useMongoClient: true, promiseLibrary: require('bluebird') })
+  .then(() =&gt;  console.log('connection succesful'))
+  .catch((err) =&gt; console.error(err));
+</code></pre>
+
+<p>如果运行时，控制台打印 <code>connection succesful</code> , 说明数据库连接成功。</p>
+
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'ah-chu'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/xilesun">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> -ah chu-
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://blog.imqia.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://blog.imqia.me/js/main.js"></script>
+<script src="http://blog.imqia.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

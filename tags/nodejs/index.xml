@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nodejs on -ah chu-</title>
+    <link>http://blog.imqia.me/tags/nodejs/</link>
+    <description>Recent content in Nodejs on -ah chu-</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 16 Jul 2018 18:19:09 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.imqia.me/tags/nodejs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>配置Express &#43; Angular &#43; MongoDB &#43; TypeScript</title>
+      <link>http://blog.imqia.me/posts/mean-environment-conf/</link>
+      <pubDate>Mon, 16 Jul 2018 18:19:09 +0800</pubDate>
+      
+      <guid>http://blog.imqia.me/posts/mean-environment-conf/</guid>
+      <description>最近打算尝试一下新的技术栈，先做一个个人网站练手。后端方面选择的是NodeJS，框架用Express，前端方面选择的是Angular, 数据库</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.imqia.me/posts/mean-environment-conf/</loc>
+    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.imqia.me/posts/sustc-subject-system-analysis/</loc>
     <lastmod>2018-02-25T22:21:36+08:00</lastmod>
   </url>
@@ -24,7 +29,7 @@
   
   <url>
     <loc>http://blog.imqia.me/</loc>
-    <lastmod>2018-02-25T22:21:36+08:00</lastmod>
+    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -33,24 +38,37 @@
   </url>
   
   <url>
+    <loc>http://blog.imqia.me/tags/angular/</loc>
+    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.imqia.me/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://blog.imqia.me/tags/css/</loc>
+    <lastmod>2016-09-09T12:08:08+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.imqia.me/tags/nodejs/</loc>
+    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.imqia.me/posts/</loc>
-    <lastmod>2018-02-25T22:21:36+08:00</lastmod>
+    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.imqia.me/tags/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.imqia.me/tags/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2016-09-09T12:08:08+08:00</lastmod>
+    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
     <priority>0</priority>
   </url>
   
