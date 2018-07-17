@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://blog.imqia.me/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="GraphQL Express Server Hello World"/>
+  <meta name="twitter:description" content="对于这次要写的个人网站，除了上一篇文章提到要尝试的新的技术栈之外，还有是希望用GraphQL来代替之前使用的Restful API, 在正式开始写项目"/>
+  
+    <meta name="twitter:site" content="@your_twitter_id"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@-ah chu-"/>
+  
+
+
+
+		
+		<meta name="author" content="-ah chu-">
+		<meta name="description" content="Web Developer">
+		<meta name="generator" content="Hugo 0.36.1" />
+		<title>GraphQL Express Server Hello World &middot; -ah chu-</title>
+		<link rel="shortcut icon" href="http://blog.imqia.me/images/favicon.ico">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/style.css">
+		<link rel="stylesheet" href="http://blog.imqia.me/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://blog.imqia.me/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://blog.imqia.me/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://blog.imqia.me/posts'>Archive</a>
+	<a href='http://blog.imqia.me/tags'>Tags</a>
+	<a href='http://blog.imqia.me/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        GraphQL Express Server Hello World
+                    </h1>
+                    <h2 class="headline">
+                    Jul 17, 2018 13:26
+                    · 1494 words
+                    · 3 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="http://blog.imqia.me/tags/graphql">GraphQL</a>
+                          
+                              <a href="http://blog.imqia.me/tags/nodejs">NodeJS</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#安装依赖">安装依赖</a></li>
+<li><a href="#hello-world">Hello World</a></li>
+<li><a href="#一个稍微复杂的例子">一个稍微复杂的例子</a></li>
+<li><a href="#修改数据">修改数据</a></li>
+<li><a href="#graphql-versus-rest">GraphQL versus REST</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<p>对于这次要写的个人网站，除了上一篇文章提到要尝试的新的技术栈之外，还有是希望用GraphQL来代替之前使用的Restful API, 在正式开始写项目代码之前，先查看相关文档和教程，写了一些示例代码，同样记录下来。对于GraphQL，现在已经有不少框架，可以方便的构建从服务器端到客户端的整套的API，我这里使用的是Apollo，这篇文章的代码针对的是用Express搭建的服务器端。</p>
+
+<h3 id="安装依赖">安装依赖</h3>
+
+<p>首先是安装相关的依赖库。项目结构等其他方面的搭建可以参考上一篇文章。</p>
+
+<pre><code class="language-shell">cd server
+
+npm install apollo-server-express graphql graphql-tools --save
+npm install @types/graphql --save-dev
+</code></pre>
+
+<h3 id="hello-world">Hello World</h3>
+
+<p>首先测试一个来自官网的例子。在 <code>server/src/index.ts</code> 添加如下代码：</p>
+
+<pre><code class="language-javascript">import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
+import { makeExecutableSchema } from 'graphql-tools';
+
+let typeDefs = [`
+  type Query {
+    hello: String
+  }
+
+  schema {
+    query: Query
+  }
+`];
+
+let resolvers = {
+  Query: {
+    hello(root: object) {
+      return 'world';
+    }
+  }
+};
+
+let schema = makeExecutableSchema({typeDefs, resolvers});
+const app = express();
+app.use('/graphql', bodyParser.json(), graphqlExpress({schema}));
+app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
+app.listen(4000, () =&gt; console.log('Now browse to localhost:4000/graphiql'));
+</code></pre>
+
+<p>注意，这里的代码和GraphQL官网的示例有稍稍不同，因为这里写的是TypeScript，注意到官网上 <code>hello(root)</code> 这个地方参数 <code>root</code> 需要添加类型声明，否则编辑器会报错。通过查看<a href="https://www.apollographql.com/docs/graphql-tools/resolvers.html">Apollo Server文档</a>，发现Resolver函数会传递四个参数，参数说明如下:</p>
+
+<ul>
+<li>obj: The object that contains the result returned from the resolver on the parent field, or, in the case of a top-level Query field, the rootValue passed from the server configuration. This argument enables the nested nature of GraphQL queries.</li>
+<li>args: An object with the arguments passed into the field in the query. For example, if the field was called with author(name: &ldquo;Ada&rdquo;), the args object would be: { &ldquo;name&rdquo;: &ldquo;Ada&rdquo; }.</li>
+<li>context: This is an object shared by all resolvers in a particular query, and is used to contain per-request state, including authentication information, dataloader instances, and anything else that should be taken into account when resolving the query. If you’re using Apollo Server, read about how to set the context in the setup documentation.</li>
+<li>info: This argument should only be used in advanced cases, but it contains information about the execution state of the query, including the field name, path to the field from the root, and more. It’s only documented in the GraphQL.js source code.</li>
+</ul>
+
+<p>因此 <code>root</code> 即为第一个参数，类型是 <code>object</code>.</p>
+
+<p>然后打开 <code>localhost:4000/graphiql</code>, 是一个可视化的测试界面，在左边键入query</p>
+
+<pre><code class="language-GraphQL">{
+  hello
+}
+</code></pre>
+
+<p>即可在右边得到结果</p>
+
+<pre><code class="language-GraphQL">{
+  &quot;data&quot;: {
+    &quot;hello&quot;: &quot;world&quot;
+  }
+}
+</code></pre>
+
+<h3 id="一个稍微复杂的例子">一个稍微复杂的例子</h3>
+
+<p>接下来写一个来自网上的稍微复杂的例子，原来的例子是用原生的GraphQL写的，我将他改成了Apollo封装并且符合TypeScript的语法。</p>
+
+<p>还是在 <code>server/src/index.ts</code> 中输入代码</p>
+
+<pre><code class="language-javascript">// Mock data
+const coursesData = [
+  {
+      id: 1,
+      title: 'The Complete Node.js Developer Course',
+      author: 'Andrew Mead, Rob Percival',
+      description: 'Learn Node.js by building real-world applications with Node, Express, MongoDB, Mocha, and more!',
+      topic: 'Node.js',
+      url: 'https://codingthesmartway.com/courses/nodejs/'
+  },
+  {
+      id: 2,
+      title: 'Node.js, Express &amp; MongoDB Dev to Deployment',
+      author: 'Brad Traversy',
+      description: 'Learn by example building &amp; deploying real-world Node.js applications from absolute scratch',
+      topic: 'Node.js',
+      url: 'https://codingthesmartway.com/courses/nodejs-express-mongodb/'
+  },
+  {
+      id: 3,
+      title: 'JavaScript: Understanding The Weird Parts',
+      author: 'Anthony Alicea',
+      description: 'An advanced JavaScript course for everyone! Scope, closures, prototypes, this, build your own framework, and more.',
+      topic: 'JavaScript',
+      url: 'https://codingthesmartway.com/courses/understand-javascript/'
+  }
+];
+
+// 这里 Int! 的感叹号表示该参数不可为空
+let typeDefs = [`
+  type Query {
+    course(id: Int!): Course
+    courses(topic: String): [Course]
+  }
+  type Course {
+    id: Int
+    title: String
+    author: String
+    description: String
+    topic: String
+    url: String
+  }
+`];
+
+let resolvers = {
+  Query: {
+    // 这里添加了TypeScript的类型声明
+    course (root: object, args: {'id': number}) {
+      let id = args.id;
+      return coursesData.filter(course =&gt; {
+        return course.id === id;
+      })[0];
+    },
+    courses (root: object, args: {'topic': string}) {
+      if (args.topic) {
+          let topic = args.topic;
+          return coursesData.filter(course =&gt; course.topic === topic);
+      } else {
+          return coursesData;
+      }
+    }
+  }
+};
+</code></pre>
+
+<p>到这里我们应该知道，<code>Resolver</code> 和 <code>typeDefs</code> 中定义的内容是相对应的，<code>Resolver</code> 定义的函数用来处理名字相同的类型。</p>
+
+<p>打开测试界面，在左边键入如下query</p>
+
+<pre><code class="language-GraphQL">query getSingleCourse($courseID: Int!) {
+    course(id: $courseID) {
+        title
+        author
+        description
+        topic
+        url
+    }
+}
+</code></pre>
+
+<p>在Query Variables的地方输入</p>
+
+<pre><code class="language-GraphQL">{
+  &quot;courseID&quot;: 1
+}
+</code></pre>
+
+<p>即可获得 <code>id=1</code> 的course</p>
+
+<p>获得所有courses, 可以使用下面的query</p>
+
+<pre><code class="language-GraphQL">query getCourses($courseTopic: String) {
+    course(topic: $courseTopic) {
+        title
+        author
+        description
+        topic
+        url
+    }
+}
+</code></pre>
+
+<p>如果在variables定义了 <code>$courseTopic</code> 则返回该topic下的所有课程，否则返回所有课程。</p>
+
+<p>另外我们可以定义Fragment使得属性可以复用，用法如下：</p>
+
+<pre><code class="language-GraphQL">query getCourseWithFragments($courseID1: Int!, $courseID2: Int!) {
+      course1: course(id: $courseID1) {
+             ...courseFields
+      },
+      course2: course(id: $courseID2) {
+            ...courseFields
+      } 
+}
+
+fragment courseFields on Course {
+  title
+  author
+  description
+  topic
+  url
+}
+</code></pre>
+
+<h3 id="修改数据">修改数据</h3>
+
+<p>要对数据进行修改，要用到 <code>Mutations</code>, 添加下面的代码：</p>
+
+<pre><code class="language-javascript">let typeDefs = [`
+  type Query {
+    course(id: Int!): Course
+    courses(topic: String): [Course]
+  }
+  type Mutation {
+    updateCourseTopic(id: Int!, topic: String!): Course
+  }
+  type Course {
+    id: Int
+    title: String
+    author: String
+    description: String
+    topic: String
+    url: String
+  }
+`];
+
+let resolvers = {
+  Query: {
+    // ...
+  },
+  Mutation: {
+    updateCourseTopic(root: object, args: { 'id': number, 'topic': string }) {
+      coursesData.map(course =&gt; {
+        if (course.id === args.id) {
+            course.topic = args.topic;
+            return course;
+        }
+      });
+      return coursesData.filter(course =&gt; course.id === args.id) [0];
+    }
+  }
+};
+</code></pre>
+
+<p>然后通过运行下面的query，即可修改course的topic</p>
+
+<pre><code class="language-GraphQL">mutation updateCourseTopic($id: Int!, $topic: String!) {
+  updateCourseTopic(id: $id, topic: $topic) {
+    ... courseFields
+  }
+}
+</code></pre>
+
+<p>Query Variables</p>
+
+<pre><code class="language-GraphQL">{
+  &quot;id&quot;: 1,
+  &quot;topic&quot;: &quot;JavaScript&quot;
+}
+</code></pre>
+
+<h3 id="graphql-versus-rest">GraphQL versus REST</h3>
+
+<p>GraphQL相比于REST最大的不同在于获取数据方面，GraphQL只有一个endpoint，返回的数据根据query的不同而不同，可以根据不同的需要获取想要的数据，同时减少了网络请求的次数。在错误处理方面，GraphQL会得到一个完整的错误信息，包括对query错误的定位，而REST则是根据HTTP状态码的不同来判断错误的类型。</p>
+
+                </section>
+            </article>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'ah-chu'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/xilesun">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> -ah chu-
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://blog.imqia.me/js/jquery-3.3.1.min.js"></script>
+<script src="http://blog.imqia.me/js/main.js"></script>
+<script src="http://blog.imqia.me/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.imqia.me/posts/graphql-hello-world/</loc>
+    <lastmod>2018-07-17T13:26:28+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.imqia.me/posts/mean-environment-conf/</loc>
     <lastmod>2018-07-16T18:19:09+08:00</lastmod>
   </url>
@@ -29,7 +34,7 @@
   
   <url>
     <loc>http://blog.imqia.me/</loc>
-    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
+    <lastmod>2018-07-17T13:26:28+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -55,14 +60,20 @@
   </url>
   
   <url>
+    <loc>http://blog.imqia.me/tags/graphql/</loc>
+    <lastmod>2018-07-17T13:26:28+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.imqia.me/tags/nodejs/</loc>
-    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
+    <lastmod>2018-07-17T13:26:28+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.imqia.me/posts/</loc>
-    <lastmod>2018-07-16T18:19:09+08:00</lastmod>
+    <lastmod>2018-07-17T13:26:28+08:00</lastmod>
     <priority>0</priority>
   </url>
   

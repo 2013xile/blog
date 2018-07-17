@@ -6,10 +6,19 @@
     <description>Recent content in Posts on -ah chu-</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 16 Jul 2018 18:19:09 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 17 Jul 2018 13:26:28 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.imqia.me/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GraphQL Express Server Hello World</title>
+      <link>http://blog.imqia.me/posts/graphql-hello-world/</link>
+      <pubDate>Tue, 17 Jul 2018 13:26:28 +0800</pubDate>
+      
+      <guid>http://blog.imqia.me/posts/graphql-hello-world/</guid>
+      <description>对于这次要写的个人网站，除了上一篇文章提到要尝试的新的技术栈之外，还有是希望用GraphQL来代替之前使用的Restful API, 在正式开始写项目</description>
+    </item>
     
     <item>
       <title>配置Express &#43; Angular &#43; MongoDB &#43; TypeScript</title>
