@@ -68,7 +68,7 @@
                     </h1>
                     <h2 class="headline">
                     Jul 16, 2018 18:19
-                    · 1049 words
+                    · 1076 words
                     · 3 minute read
                       <span class="tags">
                       
@@ -287,7 +287,13 @@ app.listen(port, () =&gt; console.log(`Running on localhost:${port}`));
 <pre><code class="language-shell">npm install mongodb mongoose bluebird --save
 </code></pre>
 
-<p>编写测试代码，在 <code>server/index.ts</code> 中添加如下代码</p>
+<p>编写测试代码，在 <code>.env</code> 文件中添加mongodb的设置变量</p>
+
+<pre><code class="language-dotenv"># 数据库地址
+process.env.MONGODB_URI_LOCAL=mongodb://localhost:27017
+</code></pre>
+
+<p>在 <code>server/index.ts</code> 中添加如下代码</p>
 
 <pre><code class="language-javascript">import mongoose from 'mongoose';
 import bluebird from 'bluebird';
