@@ -1,6 +1,6 @@
 ## Install APUE enviroment on macOS12.1
 
-> Since I prepare to study cpp and choose <Advanced Programming in the UNIX Environment 3rd> as my guide book, I am suppose to install the development environment so called apue.3e.
+> Since I prepare to study cpp and choose &lt;Advanced Programming in the UNIX Environment 3rd&gt; as my guide book, I am suppose to install the development environment so called apue.3e.
 
 # 1
 Download the source code from the official website of APUE
