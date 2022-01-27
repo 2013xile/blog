@@ -1,2 +1,2 @@
 # blog
-blog.imqia.me
+blog.xile.site
