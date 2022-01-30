@@ -5,7 +5,7 @@
 
 # Variadic arguments
 
-The function declared as follows:
+The function will be declared as follows:
 
 ```
 int printx(const char* fmt...);
