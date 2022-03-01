@@ -1,4 +1,4 @@
-## Leetcode #724
+## LeetCode #724
 
 ```
 class Solution {
